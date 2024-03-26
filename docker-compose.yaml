@@ -22,10 +22,9 @@ services:
     ports:
       - 4180:4180/tcp
     networks:
-      dex: {}
       httpbin: {}
     depends_on:
-      - httpbin
+      - nginx
   etcd:
     container_name: etcd
     image: gcr.io/etcd-development/etcd:v3.5.11
@@ -66,6 +65,8 @@ services:
       - PGDATABASE=postgres
       - PGPASSWORD=postgres_password
       - PGPORT=5432
+    networks:
+      httpbin: {}
   client:
     stdin_open: true
     environment:
@@ -76,6 +77,8 @@ services:
     volumes:
       - /app/node_modules
       - ./client:/app
+    networks:
+      httpbin: {}
 networks:
   etcd: {}
   httpbin: {}
