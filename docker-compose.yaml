@@ -48,6 +48,8 @@ services:
     build:
       dockerfile: Dockerfile.dev
       context: ./nginx
+    volumes:
+      - "./nginx/default.conf:/etc/nginx/conf.d/default.conf"
     ports:
       - "8080:80/tcp"
     networks:
@@ -81,6 +83,14 @@ services:
       - ./client:/app
     networks:
       nginx: {}
+  httpbin:
+    container_name: httpbin
+    image: kennethreitz/httpbin
+    ports:
+      - 8081:80/tcp
+    networks:
+      nginx: {}
+    command: ["gunicorn", "-b", "0.0.0.0:80", "httpbin:app", "-k", "gevent", "--log-level", "DEBUG"]
 networks:
   etcd: {}
   nginx: {}
