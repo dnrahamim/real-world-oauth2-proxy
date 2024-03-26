@@ -1,7 +1,7 @@
 # This docker-compose file can be used to bring up an example instance of oauth2-proxy
 # for manual testing and exploration of features.
 # Alongside OAuth2-Proxy, this file also starts Dex to act as the identity provider,
-# etcd for storage for Dex  and HTTPBin as an example upstream.
+# etcd for storage for Dex  and nginx as an example upstream.
 #
 # This can either be created using docker-compose
 #    docker-compose -f docker-compose.yaml <command>
@@ -22,7 +22,7 @@ services:
     ports:
       - 4180:4180/tcp
     networks:
-      httpbin: {}
+      nginx: {}
     depends_on:
       - nginx
   etcd:
@@ -39,7 +39,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres_password
     networks:
-      httpbin: {}
+      nginx: {}
   nginx:
     depends_on:
       - api
@@ -51,9 +51,9 @@ services:
     ports:
       - "8080:80/tcp"
     networks:
-      httpbin:
+      nginx:
         aliases:
-          - httpbin.localtest.me
+          - nginx.localtest.me
   api:
     build:
       dockerfile: Dockerfile.dev
@@ -68,7 +68,7 @@ services:
       - PGPASSWORD=postgres_password
       - PGPORT=5432
     networks:
-      httpbin: {}
+      nginx: {}
   client:
     stdin_open: true
     environment:
@@ -80,7 +80,7 @@ services:
       - /app/node_modules
       - ./client:/app
     networks:
-      httpbin: {}
+      nginx: {}
 networks:
   etcd: {}
-  httpbin: {}
+  nginx: {}
