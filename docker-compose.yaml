@@ -38,6 +38,8 @@ services:
     image: "postgres:latest"
     environment:
       - POSTGRES_PASSWORD=postgres_password
+    networks:
+      httpbin: {}
   nginx:
     depends_on:
       - api
