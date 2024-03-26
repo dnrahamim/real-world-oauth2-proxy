@@ -30,14 +30,20 @@ const MainComponent = () => {
     getAllNumbers();
   }, []);
 
+  const ping = useCallback(async () => {
+    // we will use nginx to redirect it to the proper URL
+    const resp = await axios.get("/ping");
+    alert(resp?.data)
+  }, [])
+
   return (
     <div>
-      <button onClick={getAllNumbers}>Get all numbers</button>
+      <button onClick={ping}>Ping</button>
       <br />
       <span className="title">Values</span>
       <div className="values">
-        {values.map(value => (
-          <div className="value">{value}</div>
+        {values.map((value, index) => (
+          <div key={index} className="value">{value}</div>
         ))}
       </div>
       <form className="form" onSubmit={saveNumber}>
