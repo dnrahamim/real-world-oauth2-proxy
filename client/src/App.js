@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     getAndSetUserInfo();
-  }, []);
+  }, [getAndSetUserInfo]);
 
   return (
     <Router>

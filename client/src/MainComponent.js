@@ -28,7 +28,7 @@ const MainComponent = () => {
 
   useEffect(() => {
     getAllNumbers();
-  }, []);
+  }, [getAllNumbers]);
 
   const ping = useCallback(async () => {
     // we will use nginx to redirect it to the proper URL
