@@ -6,6 +6,8 @@ import OtherPage from "./OtherPage";
 import MainComponent from "./MainComponent";
 import axios from "axios";
 
+const OIDC_ISSUER_DOMAIN = "dev-96064100.okta.com"
+
 function App() {
   const [userInfo, setUserInfo] = useState({});
 
@@ -32,7 +34,7 @@ function App() {
             <Link to="/otherpage">Other page</Link>
           </span>
           <span>
-            <a href="/oauth2/sign_out">Log Out</a>
+            <a href={`/oauth2/sign_out?rd=https%3A%2F%2F${OIDC_ISSUER_DOMAIN}%2Fv1%2Flogout`}>Log Out</a>
           </span>
         </header>
         <div>
