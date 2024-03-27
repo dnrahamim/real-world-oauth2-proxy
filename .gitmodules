@@ -1,0 +1,6 @@
+[submodule "nestjs-realworld-example-app"]
+	path = nestjs-realworld-example-app
+	url = https://github.com/mikro-orm/nestjs-realworld-example-app
+[submodule "ts-redux-react-realworld-example-app"]
+	path = ts-redux-react-realworld-example-app
+	url = https://github.com/dnrahamim/ts-redux-react-realworld-example-app

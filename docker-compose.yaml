@@ -25,6 +25,7 @@ services:
       nginx: {}
     depends_on:
       - nginx
+
   etcd:
     container_name: etcd
     image: gcr.io/etcd-development/etcd:v3.5.11
@@ -34,12 +35,7 @@ services:
       - --advertise-client-urls=http://etcd:2379
     networks:
       etcd: {}
-  postgres:
-    image: "postgres:latest"
-    environment:
-      - POSTGRES_PASSWORD=postgres_password
-    networks:
-      nginx: {}
+      
   nginx:
     depends_on:
       - api
@@ -56,33 +52,53 @@ services:
       nginx:
         aliases:
           - nginx.localtest.me
+
+  mysql:
+    image: mysql:8.3
+    platform: linux/x86_64
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      nginx: {}
+
   api:
     build:
       dockerfile: Dockerfile.dev
-      context: "./server"
+      context: "./nestjs-realworld-example-app"
     volumes:
       - /app/node_modules
-      - ./server:/app
-    environment:
-      - PGUSER=postgres
-      - PGHOST=postgres
-      - PGDATABASE=postgres
-      - PGPASSWORD=postgres_password
-      - PGPORT=5432
+      - ./nestjs-realworld-example-app:/app
+    ports:
+      - '5000:3000'
+    depends_on:
+      - mysql
     networks:
       nginx: {}
+
   client:
     stdin_open: true
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+    ports:
+      - "3000:3000"
     build:
       dockerfile: Dockerfile.dev
-      context: ./client
+      context: ./ts-redux-react-realworld-example-app
     volumes:
       - /app/node_modules
-      - ./client:/app
+      - ./ts-redux-react-realworld-example-app:/app
     networks:
       nginx: {}
+      
+volumes:
+  mysql:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+
 networks:
   etcd: {}
   nginx: {}
