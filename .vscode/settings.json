@@ -1,0 +1,3 @@
+{
+    "eslint.workingDirectories": ["./nestjs-realworld-example-app", "./ts-redux-react-realworld-example-app"],
+}
